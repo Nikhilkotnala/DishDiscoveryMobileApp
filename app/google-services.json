@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "774045011108",
+    "project_id": "dishdiscoveryapp",
+    "storage_bucket": "dishdiscoveryapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:774045011108:android:8ccf593a1b1edaf8202a31",
+        "android_client_info": {
+          "package_name": "uk.ac.tees.mad.D3939804"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC3txJEnBPnLgA8ARs3raFIqvIVEXXUGMM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
