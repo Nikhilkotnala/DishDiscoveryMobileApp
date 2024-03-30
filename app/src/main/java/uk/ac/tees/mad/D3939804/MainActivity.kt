@@ -3,24 +3,17 @@ package uk.ac.tees.mad.D3939804
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
 import uk.ac.tees.mad.D3939804.auth.SignupScreen
 import uk.ac.tees.mad.D3939804.ui.theme.ComposeLoginTheme
-
-import uk.ac.tees.mad.D3939804.ui.screens.NavigationRoutes
-import uk.ac.tees.mad.D3939804.ui.screens.authenticatedGraph
-import uk.ac.tees.mad.D3939804.ui.screens.unauthenticatedGraph
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
