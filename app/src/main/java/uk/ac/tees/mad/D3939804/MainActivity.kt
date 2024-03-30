@@ -9,10 +9,13 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
+import uk.ac.tees.mad.D3939804.auth.SignupScreen
 import uk.ac.tees.mad.D3939804.ui.theme.ComposeLoginTheme
 
 import uk.ac.tees.mad.D3939804.ui.screens.NavigationRoutes
@@ -25,46 +28,36 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             ComposeLoginTheme {
-                MainApp()
+                Surface(color = MaterialTheme.colorScheme.background) {
+                    DDiscoveryApp()
+                }
             }
         }
     }
 }
 
-@Composable
-fun MainApp() {
-    Surface(
-        modifier = Modifier.fillMaxSize(),
-        color = MaterialTheme.colorScheme.background
-    ) {
-        MainAppNavHost()
-    }
-
+// route destination screens
+sealed class DestinationScreen(val route: String){
+    object Signup: DestinationScreen("signup")
 }
 
+// navigation to screens
 @Composable
-fun MainAppNavHost(
-    modifier: Modifier = Modifier,
-    navController: NavHostController = rememberNavController(),
-) {
-    NavHost(
-        modifier = modifier,
-        navController = navController,
-        startDestination = NavigationRoutes.Unauthenticated.NavigationRoute.route
-    ) {
-        // Unauthenticated user flow screens
-        unauthenticatedGraph(navController = navController)
-
-        // Authenticated user flow screens
-        authenticatedGraph(navController = navController)
+fun DDiscoveryApp() {
+    val vm = hiltViewModel<DdViewModel>()
+    val navController = rememberNavController()
+    
+    NavHost(navController = navController, startDestination = DestinationScreen.Signup.route){
+        composable(DestinationScreen.Signup.route){
+            SignupScreen(navController = navController, vm = vm)
+        }
     }
-
 }
 
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
     ComposeLoginTheme {
-        MainApp()
+        DDiscoveryApp()
     }
 }
