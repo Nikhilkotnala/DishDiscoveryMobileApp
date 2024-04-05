@@ -83,7 +83,13 @@ fun SignupScreen(navController: NavController, vm: DdViewModel) {
                 visualTransformation = PasswordVisualTransformation()
             )
             Button(
-                onClick = {},
+                onClick = {
+                          vm.onSignup(
+                              usernameState.value.text,
+                              emailState.value.text,
+                              passState.value.text
+                          )
+                },
                 modifier = Modifier.padding(8.dp)
             ) {
                 Text(text = "SIGN UP")
