@@ -5,34 +5,35 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
-import uk.ac.tees.mad.D3939804.database.RecipeDatabase
-import uk.ac.tees.mad.D3939804.entities.Category
-import uk.ac.tees.mad.D3939804.entities.CategoryItems
-import uk.ac.tees.mad.D3939804.entities.Meal
-import uk.ac.tees.mad.D3939804.entities.MealsItems
-import uk.ac.tees.mad.D3939804.interfaces.GetDataService
-import uk.ac.tees.mad.D3939804.retofitclient.RetrofitClientInstance
-import kotlinx.android.synthetic.main.activity_splash.*
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import pub.devrel.easypermissions.AppSettingsDialog
 import pub.devrel.easypermissions.EasyPermissions
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.util.jar.Manifest
+import uk.ac.tees.mad.D3939804.database.RecipeDatabase
+import uk.ac.tees.mad.D3939804.databinding.ActivitySplashBinding
+import uk.ac.tees.mad.D3939804.entities.Category
+import uk.ac.tees.mad.D3939804.entities.Meal
+import uk.ac.tees.mad.D3939804.entities.MealsItems
+import uk.ac.tees.mad.D3939804.interfaces.GetDataService
+import uk.ac.tees.mad.D3939804.retofitclient.RetrofitClientInstance
 
 class SplashActivity : BaseActivity(), EasyPermissions.RationaleCallbacks,
     EasyPermissions.PermissionCallbacks {
     private var READ_STORAGE_PERM = 123
+    private lateinit var binding: ActivitySplashBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_splash)
-
+        binding = ActivitySplashBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         readStorageTask()
-
-        btnGetStarted.setOnClickListener {
-            var intent = Intent(this@SplashActivity, HomeActivity::class.java)
+        binding.btnGetStarted.setOnClickListener {
+            val intent = Intent(this@SplashActivity, RegisterActivity::class.java)
             startActivity(intent)
             finish()
         }
@@ -44,7 +45,6 @@ class SplashActivity : BaseActivity(), EasyPermissions.RationaleCallbacks,
         val call = service.getCategoryList()
         call.enqueue(object : Callback<Category> {
             override fun onFailure(call: Call<Category>, t: Throwable) {
-
                 Toast.makeText(this@SplashActivity, "Something went wrong", Toast.LENGTH_SHORT)
                     .show()
             }
@@ -53,16 +53,16 @@ class SplashActivity : BaseActivity(), EasyPermissions.RationaleCallbacks,
                 call: Call<Category>,
                 response: Response<Category>
             ) {
-
-                for (arr in response.body()!!.categorieitems!!) {
-                    getMeal(arr.strcategory)
+                val categories = response.body()?.categorieitems ?: emptyList()
+                CoroutineScope(Dispatchers.IO).launch {
+                    categories.forEach { category ->
+                        getMeal(category.strcategory)
+                    }
+                    insertDataIntoRoomDb(response.body())
                 }
-                insertDataIntoRoomDb(response.body())
             }
-
         })
     }
-
 
     fun getMeal(categoryName: String) {
         val service = RetrofitClientInstance.retrofitInstance!!.create(GetDataService::class.java)
@@ -70,7 +70,7 @@ class SplashActivity : BaseActivity(), EasyPermissions.RationaleCallbacks,
         call.enqueue(object : Callback<Meal> {
             override fun onFailure(call: Call<Meal>, t: Throwable) {
 
-                loader.visibility = View.INVISIBLE
+                binding.loader.visibility = View.INVISIBLE
                 Toast.makeText(this@SplashActivity, "Something went wrong", Toast.LENGTH_SHORT)
                     .show()
             }
@@ -89,8 +89,7 @@ class SplashActivity : BaseActivity(), EasyPermissions.RationaleCallbacks,
     fun insertDataIntoRoomDb(category: Category?) {
 
         launch {
-            this.let {
-
+            withContext(Dispatchers.IO){
                 for (arr in category!!.categorieitems!!) {
                     RecipeDatabase.getDatabase(this@SplashActivity)
                         .recipeDao().insertCategory(arr)
@@ -115,12 +114,14 @@ class SplashActivity : BaseActivity(), EasyPermissions.RationaleCallbacks,
                         arr.strMeal,
                         arr.strMealThumb
                     )
-                    RecipeDatabase.getDatabase(this@SplashActivity)
-                        .recipeDao().insertMeal(mealItemModel)
-                    Log.d("mealData", arr.toString())
+                    withContext(Dispatchers.IO){
+                        RecipeDatabase.getDatabase(this@SplashActivity)
+                            .recipeDao().insertMeal(mealItemModel)
+                        Log.d("mealData", arr.toString())
+                    }
                 }
 
-                btnGetStarted.visibility = View.VISIBLE
+                binding.btnGetStarted.visibility = View.VISIBLE
             }
         }
 
@@ -129,7 +130,7 @@ class SplashActivity : BaseActivity(), EasyPermissions.RationaleCallbacks,
 
     fun clearDataBase() {
         launch {
-            this.let {
+            withContext(Dispatchers.IO){
                 RecipeDatabase.getDatabase(this@SplashActivity).recipeDao().clearDb()
             }
         }

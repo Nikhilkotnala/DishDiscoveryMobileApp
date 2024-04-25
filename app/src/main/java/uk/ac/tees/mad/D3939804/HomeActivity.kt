@@ -1,18 +1,17 @@
 package uk.ac.tees.mad.D3939804
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import uk.ac.tees.mad.D3939804.adapter.MainCategoryAdapter
 import uk.ac.tees.mad.D3939804.adapter.SubCategoryAdapter
 import uk.ac.tees.mad.D3939804.database.RecipeDatabase
-import uk.ac.tees.mad.D3939804.entities.Category
+import uk.ac.tees.mad.D3939804.databinding.ActivityHomeBinding
 import uk.ac.tees.mad.D3939804.entities.CategoryItems
 import uk.ac.tees.mad.D3939804.entities.MealsItems
-import uk.ac.tees.mad.D3939804.entities.Recipes
-import kotlinx.android.synthetic.main.activity_home.*
-import kotlinx.coroutines.launch
 
 class HomeActivity : BaseActivity() {
     var arrMainCategory = ArrayList<CategoryItems>()
@@ -21,19 +20,15 @@ class HomeActivity : BaseActivity() {
     var mainCategoryAdapter = MainCategoryAdapter()
     var subCategoryAdapter = SubCategoryAdapter()
 
+    private lateinit var binding: ActivityHomeBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_home)
-
-
+        binding = ActivityHomeBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         getDataFromDb()
-
         mainCategoryAdapter.setClickListener(onCLicked)
         subCategoryAdapter.setClickListener(onCLickedSubItem)
-
-
-
-
     }
 
     private val onCLicked  = object : MainCategoryAdapter.OnItemClickListener{
@@ -53,32 +48,31 @@ class HomeActivity : BaseActivity() {
     private fun getDataFromDb(){
         launch {
             this.let {
-                var cat = RecipeDatabase.getDatabase(this@HomeActivity).recipeDao().getAllCategory()
-                arrMainCategory = cat as ArrayList<CategoryItems>
-                arrMainCategory.reverse()
-
-                getMealDataFromDb(arrMainCategory[0].strcategory)
-                mainCategoryAdapter.setData(arrMainCategory)
-                rv_main_category.layoutManager = LinearLayoutManager(this@HomeActivity,LinearLayoutManager.HORIZONTAL,false)
-                rv_main_category.adapter = mainCategoryAdapter
+                withContext(Dispatchers.IO){
+                    var cat = RecipeDatabase.getDatabase(this@HomeActivity).recipeDao().getAllCategory()
+                    arrMainCategory = cat as ArrayList<CategoryItems>
+                    arrMainCategory.reverse()
+                    getMealDataFromDb(arrMainCategory[0].strcategory)
+                    mainCategoryAdapter.setData(arrMainCategory)
+                    binding.rvMainCategory.layoutManager = LinearLayoutManager(this@HomeActivity,LinearLayoutManager.HORIZONTAL,false)
+                    binding.rvMainCategory.adapter = mainCategoryAdapter
+                }
             }
-
-
         }
     }
 
     private fun getMealDataFromDb(categoryName:String){
-        tvCategory.text = "$categoryName Category"
+        binding.tvCategory.text = "$categoryName Category"
         launch {
-            this.let {
+            withContext(Dispatchers.IO){
                 var cat = RecipeDatabase.getDatabase(this@HomeActivity).recipeDao().getSpecificMealList(categoryName)
                 arrSubCategory = cat as ArrayList<MealsItems>
                 subCategoryAdapter.setData(arrSubCategory)
-                rv_sub_category.layoutManager = LinearLayoutManager(this@HomeActivity,LinearLayoutManager.HORIZONTAL,false)
-                rv_sub_category.adapter = subCategoryAdapter
             }
-
-
+            withContext(Dispatchers.Main){
+                binding.rvSubCategory.layoutManager = LinearLayoutManager(this@HomeActivity,LinearLayoutManager.HORIZONTAL,false)
+                binding.rvSubCategory.adapter = subCategoryAdapter
+            }
         }
     }
 }

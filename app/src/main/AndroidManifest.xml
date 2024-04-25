@@ -22,6 +22,9 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".RegisterActivity"
+            android:screenOrientation="locked"/>
+
         <activity android:name=".HomeActivity"
             android:screenOrientation="locked"/>
 

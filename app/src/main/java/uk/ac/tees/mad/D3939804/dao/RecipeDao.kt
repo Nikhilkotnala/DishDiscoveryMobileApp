@@ -12,17 +12,17 @@ import uk.ac.tees.mad.D3939804.entities.MealsItems
 interface RecipeDao {
 
     @Query("SELECT * FROM categoryitems ORDER BY id DESC")
-    suspend fun getAllCategory() : List<CategoryItems>
+    fun getAllCategory() : List<CategoryItems>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertCategory(categoryItems: CategoryItems?)
+    fun insertCategory(categoryItems: CategoryItems?)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertMeal(mealsItems: MealsItems?)
+    fun insertMeal(mealsItems: MealsItems?)
 
     @Query("DELETE FROM categoryitems")
-    suspend fun clearDb()
+    fun clearDb()
 
     @Query("SELECT * FROM MealItems WHERE categoryName = :categoryName ORDER BY id DESC")
-    suspend fun getSpecificMealList(categoryName:String) : List<MealsItems>
+    fun getSpecificMealList(categoryName:String) : List<MealsItems>
 }

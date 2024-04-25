@@ -2,23 +2,18 @@ package uk.ac.tees.mad.D3939804.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import uk.ac.tees.mad.D3939804.R
+import uk.ac.tees.mad.D3939804.databinding.ItemRvSubCategoryBinding
 import uk.ac.tees.mad.D3939804.entities.CategoryItems
-import uk.ac.tees.mad.D3939804.entities.Recipes
-import kotlinx.android.synthetic.main.item_rv_main_category.view.*
 
 class MainCategoryAdapter: RecyclerView.Adapter<MainCategoryAdapter.RecipeViewHolder>() {
 
     var listener: OnItemClickListener? = null
     var ctx: Context? = null
     var arrMainCategory = ArrayList<CategoryItems>()
-    class RecipeViewHolder(view: View): RecyclerView.ViewHolder(view){
-
-    }
+    class RecipeViewHolder(val binding: ItemRvSubCategoryBinding) : RecyclerView.ViewHolder(binding.root)
 
     fun setData(arrData : List<CategoryItems>){
         arrMainCategory = arrData as ArrayList<CategoryItems>
@@ -30,7 +25,8 @@ class MainCategoryAdapter: RecyclerView.Adapter<MainCategoryAdapter.RecipeViewHo
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecipeViewHolder {
         ctx = parent.context
-        return RecipeViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_rv_main_category,parent,false))
+        val binding = ItemRvSubCategoryBinding.inflate(LayoutInflater.from(ctx), parent, false)
+        return MainCategoryAdapter.RecipeViewHolder(binding)
     }
 
     override fun getItemCount(): Int {
@@ -38,11 +34,16 @@ class MainCategoryAdapter: RecyclerView.Adapter<MainCategoryAdapter.RecipeViewHo
     }
 
     override fun onBindViewHolder(holder: RecipeViewHolder, position: Int) {
+        val currentItem = arrMainCategory[position]
 
-        holder.itemView.tv_dish_name.text = arrMainCategory[position].strcategory
-        Glide.with(ctx!!).load(arrMainCategory[position].strcategorythumb).into(holder.itemView.img_dish)
-        holder.itemView.rootView.setOnClickListener {
-            listener!!.onClicked(arrMainCategory[position].strcategory)
+        holder.binding.tvDishName.text = currentItem.strcategory
+
+        Glide.with(ctx!!)
+            .load(currentItem.strcategorythumb)
+            .into(holder.binding.imgDish)
+
+        holder.binding.root.setOnClickListener {
+            listener?.onClicked(currentItem.strcategory)
         }
     }
 
