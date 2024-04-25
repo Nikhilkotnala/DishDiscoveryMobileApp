@@ -21,4 +21,14 @@
     <dimen name="_180sdp">180dp</dimen>
     <dimen name="_260sdp">260dp</dimen>
 
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="tvRightAddressMargin">115dp</dimen>
+    <dimen name="smallButtonHeight">55dp</dimen>
+    <dimen name="smallButtonWidth">130dp</dimen>
+    <dimen name="buttonCorners">5dp</dimen>
+    <dimen name="edittextHeight">60dp</dimen>
+    <dimen name="mediumButtonWidth">200dp</dimen>
+    <dimen name="mediumButtonHeight">55dp</dimen>
+
+
 </resources>
