@@ -45,17 +45,17 @@
 
         <TextView
             android:id="@+id/tvDoYouHaveAccount"
+            style="@style/h3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            style="@style/h3"
-            app:layout_constraintStart_toStartOf="@id/tvLetsRegister"
-            app:layout_constraintTop_toBottomOf="@id/tvLetsRegister"
-            app:layout_constraintEnd_toEndOf="@id/tvLetsRegister"
-            android:textAlignment="center"
+            android:clickable="true"
             android:gravity="center"
             android:text="Have an account? login here"
+            android:textAlignment="center"
             android:textSize="20sp"
-            />
+            app:layout_constraintEnd_toEndOf="@id/tvLetsRegister"
+            app:layout_constraintStart_toStartOf="@id/tvLetsRegister"
+            app:layout_constraintTop_toBottomOf="@id/tvLetsRegister" />
 
         <EditText
             android:id="@+id/edFirstNameRegister"

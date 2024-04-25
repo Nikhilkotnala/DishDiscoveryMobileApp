@@ -23,7 +23,10 @@ class RegisterActivity : BaseActivity() {
         binding.buttonRegisterRegister.setOnClickListener({
             registerClicked()
         })
-
+        binding.tvDoYouHaveAccount.setOnClickListener({
+            val intent = Intent(this, LoginActivity::class.java)
+            startActivity(intent)
+        })
     }
 
     fun registerClicked(){
@@ -43,7 +46,7 @@ class RegisterActivity : BaseActivity() {
                 Log.d("Firebase", "User created with encodedUID: $encodedUid")
                 logIn()
             }else{
-                Toast.makeText(this,"Registration Failed. Please check your input", Toast.LENGTH_SHORT)
+                Toast.makeText(this,"Registration Failed. Please check your input", Toast.LENGTH_SHORT).show()
             }
         }
 
