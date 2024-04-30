@@ -33,6 +33,6 @@ interface RecipeDao {
     @Query("SELECT * FROM MealItems WHERE categoryName = :categoryName ORDER BY id DESC")
     fun getSpecificMealList(categoryName:String) : List<MealsItems>
 
-    @Query("SELECT * FROM MealItems WHERE id IN (:idMeals) ORDER BY id DESC")
+    @Query("SELECT * FROM MealItems WHERE idMeal IN (:idMeals) ORDER BY id DESC")
     fun getMealListById(idMeals : List<Int>) : List<MealsItems>
 }
