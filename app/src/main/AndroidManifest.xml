@@ -35,6 +35,9 @@
         <activity
             android:name=".DetailActivity"
             android:screenOrientation="locked" />
+        <activity
+            android:name=".FavouritesActivity"
+            android:screenOrientation="locked" />
     </application>
 
 </manifest>

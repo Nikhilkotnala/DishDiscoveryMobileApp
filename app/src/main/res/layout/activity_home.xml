@@ -18,15 +18,32 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <TextView
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/gilroy_bold"
-                android:padding="@dimen/_10sdp"
-                android:text="All Recipes"
-                android:textColor="@color/black"
-                android:textSize="@dimen/_20ssp" />
+                android:gravity="center_vertical"
+                android:padding="@dimen/_10sdp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/gilroy_bold"
+                    android:text="All Recipes"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_20ssp" />
 
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/btnFavs"
+                    android:textColor="@color/white"
+                    android:paddingStart="@dimen/_20sdp"
+                    android:paddingEnd="@dimen/_20sdp"
+                    android:background="@drawable/btn_bg"
+                    android:text="My Favourites"
+                    android:layout_alignParentEnd="true"/>
+
+
+            </RelativeLayout>
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -76,6 +93,25 @@
                 android:orientation="horizontal"
                 tools:itemCount="1"
                 tools:listitem="@layout/item_rv_sub_category" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/gilroy_bold"
+                android:paddingStart="@dimen/_10sdp"
+                android:text="Favourites"
+                android:id="@+id/tvFavs"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_15ssp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_favs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_10sdp"
+                android:orientation="horizontal"
+                tools:itemCount="1"
+                tools:listitem="@layout/item_fav" />
 
 
         </LinearLayout>
