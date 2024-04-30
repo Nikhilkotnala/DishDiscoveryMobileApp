@@ -52,8 +52,7 @@ class FavouritesActivity : BaseActivity() {
                 var favs = RecipeDatabase.getDatabase(this@FavouritesActivity).recipeDao().getFavourites(email)
                 favList = favs as ArrayList<Favourites>
                 val mealIdList = favList.map{extractIntegersFromString(it.mealId)}
-                val ml = listOf<Int>(1171,1172)
-                var cat = RecipeDatabase.getDatabase(this@FavouritesActivity).recipeDao().getMealListById(ml)
+                var cat = RecipeDatabase.getDatabase(this@FavouritesActivity).recipeDao().getMealListById(mealIdList)
                 arrFavs = cat as ArrayList<MealsItems>
                 favAdapter.setData(arrFavs)
             }
