@@ -94,26 +94,6 @@
                 tools:itemCount="1"
                 tools:listitem="@layout/item_rv_sub_category" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/gilroy_bold"
-                android:paddingStart="@dimen/_10sdp"
-                android:text="Favourites"
-                android:id="@+id/tvFavs"
-                android:textColor="@color/black"
-                android:textSize="@dimen/_15ssp" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_favs"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/_10sdp"
-                android:orientation="horizontal"
-                tools:itemCount="1"
-                tools:listitem="@layout/item_fav" />
-
-
         </LinearLayout>
     </ScrollView>
 
