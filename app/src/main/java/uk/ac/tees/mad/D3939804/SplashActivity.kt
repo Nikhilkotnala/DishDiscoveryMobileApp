@@ -1,10 +1,15 @@
 package uk.ac.tees.mad.D3939804
 
+import android.Manifest.permission.INTERNET
+import android.Manifest.permission.READ_EXTERNAL_STORAGE
+import android.Manifest.permission.WRITE_EXTERNAL_STORAGE
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.core.app.ActivityCompat
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -29,6 +34,12 @@ class SplashActivity : BaseActivity(), EasyPermissions.RationaleCallbacks,
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        if (!isPermissionGranted()) {
+            val permissions = arrayOf(WRITE_EXTERNAL_STORAGE,READ_EXTERNAL_STORAGE,INTERNET)
+            for (i in permissions.indices) {
+                requestPermission(permissions[i], i)
+            }
+        }
         binding = ActivitySplashBinding.inflate(layoutInflater)
         setContentView(binding.root)
         readStorageTask()
@@ -37,6 +48,15 @@ class SplashActivity : BaseActivity(), EasyPermissions.RationaleCallbacks,
             startActivity(intent)
             finish()
         }
+    }
+
+    private fun isPermissionGranted(): Boolean {
+        val permissionCheck = ActivityCompat.checkSelfPermission(this, WRITE_EXTERNAL_STORAGE)
+        return permissionCheck == PackageManager.PERMISSION_GRANTED
+    }
+
+    private fun requestPermission(permission: String, requestCode: Int) {
+        ActivityCompat.requestPermissions(this, arrayOf(permission), requestCode)
     }
 
 
