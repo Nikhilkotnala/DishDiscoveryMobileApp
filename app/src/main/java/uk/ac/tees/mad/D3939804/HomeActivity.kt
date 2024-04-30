@@ -41,6 +41,10 @@ class HomeActivity : BaseActivity() {
         mainCategoryAdapter.setClickListener(onCLicked)
         subCategoryAdapter.setClickListener(onCLickedSubItem)
         favAdapter.setClickListener(onCLickedFavItem)
+        binding.btnFavs.setOnClickListener({
+            val intent = Intent(this@HomeActivity,FavouritesActivity::class.java)
+            startActivity(intent)
+        })
     }
 
     private val onCLicked  = object : MainCategoryAdapter.OnItemClickListener{
@@ -63,11 +67,6 @@ class HomeActivity : BaseActivity() {
             intent.putExtra("id",id)
             startActivity(intent)
         }
-    }
-
-    fun onClickedFavBtn() {
-        val intent = Intent(this@HomeActivity,FavouritesActivity::class.java)
-        startActivity(intent)
     }
 
     private fun getDataFromDb(){
